@@ -1,5 +1,7 @@
 import json
+
 import pytest
+
 from src.services import search_personal_transfers
 
 
@@ -19,16 +21,20 @@ def test_transactions():
 def test_empty_transactions():
     """Тестируем функцию с пустум списком транзакций."""
     result = search_personal_transfers([])
-    assert result == json.dumps([]), "Ожидался пустой JSON для пустого списка транзакций."
+    assert result == json.dumps(
+        []
+    ), "Ожидался пустой JSON для пустого списка транзакций."
 
 
 def test_no_personal_transfers(test_transactions):
     """Тестируем функцию, когда нет переводов физ.лицам."""
     for txn in test_transactions:
-        txn['category'] = 'Покупка'
+        txn["category"] = "Покупка"
 
     result = search_personal_transfers(test_transactions)
-    assert result == json.dumps([]), "Ожидался пустой JSON для пустого списка транзакций."
+    assert result == json.dumps(
+        []
+    ), "Ожидался пустой JSON для пустого списка транзакций."
 
 
 def test_some_personal_transfers(test_transactions):
@@ -37,4 +43,6 @@ def test_some_personal_transfers(test_transactions):
         {"category": "Переводы", "description": "Иванов И.И."},
         {"category": "Переводы", "description": "Сидоров С.А."},
     ]
-    assert json.loads(result) == expected_result, "Фильтрация переводов физ.лицам не сработала"
+    assert (
+        json.loads(result) == expected_result
+    ), "Фильтрация переводов физ.лицам не сработала"

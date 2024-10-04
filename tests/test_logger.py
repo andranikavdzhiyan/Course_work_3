@@ -1,6 +1,6 @@
 import logging
 import os
-import pytest
+
 from src.logger import create_basic_logger
 
 
@@ -11,7 +11,7 @@ def test_create_basic_logger():
     assert isinstance(logger, logging.Logger)
 
     log_dir = r"C:\Users\Andrey\PycharmProjects\my_prj\Course_work_3\logs"
-    log_file_path = os.path.join(log_dir, f'{logger_name.upper()}.log')
+    log_file_path = os.path.join(log_dir, f"{logger_name.upper()}.log")
 
     os.makedirs(log_dir, exist_ok=True)
 
@@ -25,4 +25,6 @@ def test_create_basic_logger():
     with open(log_file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    assert "Это тестовое сообщение для логирования" in content, ("Тестовое сообщение не записалось в лог-файл")
+    assert (
+        "Это тестовое сообщение для логирования" in content
+    ), "Тестовое сообщение не записалось в лог-файл"

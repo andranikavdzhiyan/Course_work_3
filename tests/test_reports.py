@@ -1,8 +1,10 @@
-import os
 import json
+import os
+from datetime import datetime
+
 import pandas as pd
 import pytest
-from datetime import datetime
+
 from src.reports import spending_by_category
 
 
@@ -17,10 +19,16 @@ def test_data():
             datetime(2024, 9, 15),
             datetime(2024, 9, 30),
             datetime(2024, 10, 1),
-
         ],
-        "Категория": ["Еда", "Еда", "Транспорт", "Еда", "Транспорт", "Еда", ],
-        "Сумма операции": [100, 150, 200, 50, 300, 400]
+        "Категория": [
+            "Еда",
+            "Еда",
+            "Транспорт",
+            "Еда",
+            "Транспорт",
+            "Еда",
+        ],
+        "Сумма операции": [100, 150, 200, 50, 300, 400],
     }
     return pd.DataFrame(data)
 
@@ -31,14 +39,15 @@ def test_spending_by_category(test_data):
     expected_total_spent = 700
 
     now = datetime.now()
-    three_months_ago = now - pd.DateOffset(months=3)
 
     result = spending_by_category(test_data, category)
 
     assert result["category"] == category
     assert result["total_spent"] == expected_total_spent
 
-    output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "reports"))
+    output_folder = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "reports")
+    )
     file_path = os.path.join(output_folder, "spending_by_category.json")
 
     assert os.path.exists(file_path), f"Файл отчета не найден: {file_path}"
@@ -48,5 +57,5 @@ def test_spending_by_category(test_data):
 
     assert content["category"] == category
     assert content["total_spent"] == expected_total_spent
-    assert content["from"] == '2024-07-06'
+    assert content["from"] == "2024-07-06"
     assert content["to"] == now.strftime("%Y-%m-%d")

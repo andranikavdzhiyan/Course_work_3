@@ -1,7 +1,7 @@
+from unittest.mock import patch
 
 import pytest
 
-from unittest.mock import patch
 from src.utils import get_transaction_data
 
 

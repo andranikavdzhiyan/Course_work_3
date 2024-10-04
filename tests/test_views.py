@@ -1,6 +1,8 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
-from src.views import get_greeting, fetch_currency_rates, fetch_stock_prices
+
+from src.views import fetch_currency_rates, fetch_stock_prices, get_greeting
 
 
 # Тестируем функцию get_greeting
@@ -42,9 +44,7 @@ def test_fetch_currency_rates(mock_get):
 def test_fetch_stock_prices(mock_get):
     mock_response = MagicMock()
     mock_response.status_code = 200
-    mock_response.json.return_value = {
-        "c": 150.0
-    }
+    mock_response.json.return_value = {"c": 150.0}
     mock_get.return_value = mock_response
 
     user_stocks = ["AAPL", "TSLA"]
