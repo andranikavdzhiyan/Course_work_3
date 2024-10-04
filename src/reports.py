@@ -1,15 +1,16 @@
 import json
+import os
 from datetime import datetime, timedelta
 from functools import wraps
-from src.utils import get_transaction_data
-import os
 
 import pandas as pd
 
 
 def save_report(filename: str = "report.json"):
     """Декоратор для записи отчетов в файл."""
-    output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'reports'))
+    output_folder = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "reports")
+    )
 
     def decorator(func):
         @wraps(func)
@@ -48,17 +49,9 @@ def spending_by_category(data: pd.DataFrame, category: str, date: str = None) ->
 
     result = {
         "category": category,
-        "total_spent": total_spent,
+        "total_spent": int(total_spent),
         "from": three_mounths_ago.strftime("%Y-%m-%d"),
         "to": current_date.strftime("%Y-%m-%d"),
     }
 
     return result
-
-
-if __name__ == '__main__':
-    data = get_transaction_data("operations.xlsx")
-
-    data['Дата операции'] = pd.to_datetime(data['Дата операции'], dayfirst=True, format='%d.%m.%Y %H:%M:%S')
-
-    result = spending_by_category(data, category='Переводы', date='2021-12-31')

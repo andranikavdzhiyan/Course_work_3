@@ -1,8 +1,9 @@
 import pandas as pd
-from src.views import display_main_page
+
+from src.reports import spending_by_category
 from src.services import search_personal_transfers
 from src.utils import get_transaction_data
-from src.reports import spending_by_category
+from src.views import display_main_page
 
 if __name__ == "__main__":
     print(display_main_page("2021-12-28 09:36:56"))
@@ -14,12 +15,13 @@ if __name__ == "__main__":
     ]
 
     print(search_personal_transfers(transactions))
-    print(get_transaction_data("operations.xlsx"))
 
     file_path = "../data/operations.xlsx"
     data = get_transaction_data(file_path)
 
-    data['Дата операции'] = pd.to_datetime(data['Дата операции'], dayfirst=True, format='%d.%m.%Y %H:%M:%S')
+    data["Дата операции"] = pd.to_datetime(
+        data["Дата операции"], dayfirst=True, format="%d.%m.%Y %H:%M:%S"
+    )
 
-    result = spending_by_category(data, category='Переводы', date='2021-12-31')
-    print(spending_by_category(result))
+    result = spending_by_category(data, category="Переводы", date="2021-12-31")
+    print(result)
